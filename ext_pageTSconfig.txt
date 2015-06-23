@@ -1,0 +1,14 @@
+
+
+
+##########################################################
+# Verschiedene Felder im Backend ausblenden
+
+TCEFORM.tt_content {
+
+	imagewidth.disabled = 1
+	imageheight.disabled = 1
+
+	imagecols.disabled = 1
+	image_noRows.disabled = 1
+}

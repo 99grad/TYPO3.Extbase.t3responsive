@@ -1,0 +1,5 @@
+
+
+// Img-Tag mit srcset rendern
+
+styles.content.imgtext.layoutKey = srcset

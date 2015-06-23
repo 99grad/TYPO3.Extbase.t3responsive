@@ -1,0 +1,239 @@
+
+
+<INCLUDE_TYPOSCRIPT: source="FILE: EXT:t3responsive/Configuration/TypoScript/setup.txt">
+
+
+page.includeCSS {
+	t3responsive_frontend = EXT:t3responsive/Resources/Public/Css/frontend.css
+}
+
+page.headerData {
+	65189 = TEXT
+	65189.value (
+		<script>document.createElement( "picture" );</script><script src="typo3conf/ext/t3responsive/Resources/Public/Js/picturefill.min.js" async></script>
+	)
+}
+
+######################################################################################################
+# 	Typo3 6.2 Funktionen nutzen um Bilder responsive zu rendern
+#
+#	http://scottjehl.github.io/picturefill/
+#	http://docs.typo3.org/typo3cms/TyposcriptReference/latest/ContentObjects/Image/Index.html
+######################################################################################################
+
+
+/*
+tt_content.image.20.1 {
+	layoutKey = picture
+	layout.picture {
+		element = <picture><!--[if IE 9]><video style="display: none;"><![endif]-->###SOURCECOLLECTION###<!--[if IE 9]></video><![endif]--><img src="###SRC###"###PARAMS######ALTPARAMS######SELFCLOSINGTAGSLASH###></picture>
+	}
+}
+*/
+
+tt_content.image.20.1 {
+	sourceCollection {
+	
+		small >		
+		small {
+			maxW = 400
+			srcsetCandidate = 600w
+			mediaQuery = (max-width: 600px)
+			dataKey = small
+		}
+		
+		smallRetina >
+		smallRetina {
+			maxW = 400
+			pixelDensity = 2
+			srcsetCandidate = 600w 2x
+			mediaQuery = (max-width: 600px) AND (min-resolution: 192dpi)
+			dataKey = smallRetina
+		}
+		
+		// Small devices (tablets, 768px and up)
+		screen_sm_min {
+			maxW = 768
+			srcsetCandidate = 768w
+			mediaQuery = (max-width: 768px)
+			dataKey = screen_sm_min
+		}
+		
+		// Medium devices (desktops, 992px and up)
+		screen_md_min {
+			maxW = 992
+			srcsetCandidate = 992w
+			mediaQuery = (max-width: 992px)
+			dataKey = screen_md_min
+		}
+		
+		// Large devices (large desktops, 1200px and up)
+		screen_lg_min {
+			maxW = 1200
+			srcsetCandidate = 1200w
+			mediaQuery = (max-width: 1200px)
+			dataKey = screen_lg_min
+		}
+		
+	}
+}
+
+
+############################################################################################
+
+
+plugin.tx_t3responsive_pi1 {
+	
+}
+
+
+############################################################################################
+## Bild-Breite (Responsive)
+
+lib.tx_t3responsive_lr = LOAD_REGISTER
+lib.tx_t3responsive_lr {
+	
+	tx_t3responsive_imgClasses.cObject = COA
+	tx_t3responsive_imgClasses.cObject {
+		10 = COA
+		10 {
+			10 = TEXT
+			10 {
+				field = tx_t3responsive_imgwidth
+				noTrimWrap = |t3responsive-img-size-| |
+				required = 1
+				if.isTrue.field = tx_t3responsive_imgwidth
+			}
+			11 = TEXT
+			11 {
+				field = tx_t3responsive_imgwidthxs
+				noTrimWrap = |t3responsive-img-size-xs-| |
+				required = 1
+			}
+			12 < .11
+			12.field = tx_t3responsive_imgwidthsm
+			12.noTrimWrap = |t3responsive-img-size-sm-| |
+			13 < .11
+			13.field = tx_t3responsive_imgwidthmd
+			13.noTrimWrap = |t3responsive-img-size-md-| |
+			14 < .11
+			14.field = tx_t3responsive_imgwidthlg
+			14.noTrimWrap = |t3responsive-img-size-lg-| |
+		}
+		10.stdWrap.noTrimWrap = |t3responsive-img ||
+		10.stdWrap.required = 1
+		
+		20 = TEXT
+		20.value = hide-xs
+		20.if.isTrue.field = tx_t3responsive_hidexs
+		20.noTrimWrap = || |
+		
+		21 < .20
+		21.value = hide-sm
+		21.if.isTrue.field = tx_t3responsive_hidesm
+		22 < .20
+		22.value = hide-md
+		22.if.isTrue.field = tx_t3responsive_hidemd
+		23 < .20
+		23.value = hide-lg
+		23.if.isTrue.field = tx_t3responsive_hidelg
+		
+		30 < .20
+		30.value = float-img
+		30.if.isTrue.field = tx_t3responsive_imgfloat
+		
+		35 = TEXT
+		35.value = onlypic
+		35.noTrimWrap = || |
+		35.if.equals = image
+		35.if.value.field = CType
+	}
+
+}
+
+tt_content.stdWrap.innerWrap.cObject.default.1.t3pimper_sectionClasses.cObject {
+	95 = TEXT
+	95 {
+		cObject = COA
+		cObject {
+			10 < lib.tx_t3responsive_lr
+			20 = TEXT
+			20.data = register:tx_t3responsive_imgClasses
+			20.noTrimWrap = | ||
+			20.required = 1
+		}
+	}
+}
+
+
+tt_content.image.20 {
+
+	layout {
+		1.override >
+		1.override.cObject = COA
+		1.override.cObject {
+			10 < lib.tx_t3responsive_lr
+			20 = TEXT
+			20.value = <div class="{register:tx_t3responsive_imgClasses}csc-textpic csc-textpic-responsive csc-textpic-right csc-textpic-above###CLASSES###">###IMAGES######TEXT###</div>
+			20.insertData = 1
+		}
+		
+		2.override >
+		2 < .1
+		2.override.cObject.20.value = <div class="{register:tx_t3responsive_imgClasses}csc-textpic csc-textpic-responsive csc-textpic-left csc-textpic-above###CLASSES###">###IMAGES######TEXT###</div>
+		
+		8.override >
+		8 < .1
+		8.override.cObject.20.value = <div class="{register:tx_t3responsive_imgClasses}csc-textpic csc-textpic-responsive csc-textpic-center csc-textpic-below###CLASSES###">###TEXT######IMAGES###</div>
+
+		9.override >
+		9 < .1
+		9.override.cObject.20.value = <div class="{register:tx_t3responsive_imgClasses}csc-textpic csc-textpic-responsive csc-textpic-right csc-textpic-below###CLASSES###">###TEXT######IMAGES###</div>
+		
+		10.override >
+		10 < .1
+		10.override.cObject.20.value = <div class="{register:tx_t3responsive_imgClasses}csc-textpic csc-textpic-responsive csc-textpic-left csc-textpic-below###CLASSES###">###TEXT######IMAGES###</div>
+		
+		17.override >
+		17 < .1
+		17.override.cObject.20.value = <div class="{register:tx_t3responsive_imgClasses}csc-textpic csc-textpic-responsive csc-textpic-intext-right###CLASSES###">###IMAGES######TEXT###</div>
+		
+		18.override >
+		18 < .1
+		18.override.cObject.20.value = <div class="{register:tx_t3responsive_imgClasses}csc-textpic csc-textpic-responsive csc-textpic-intext-left###CLASSES###">###IMAGES######TEXT###</div>
+
+		25.override >
+		25 < .1
+		25.override.cObject.20.value = <div class="{register:tx_t3responsive_imgClasses}csc-textpic csc-textpic-responsive csc-textpic-intext-right-nowrap###CLASSES###">###IMAGES######TEXT###</div>
+		
+		26.override >
+		26 < .1
+		26.override.cObject.20.value = <div class="{register:tx_t3responsive_imgClasses}csc-textpic csc-textpic-responsive csc-textpic-intext-left-nowrap###CLASSES###">###IMAGES######TEXT###</div>
+	}
+	
+	# Grundsätzlich Bildausrichtung "Anzahl Spalten" wrap entfernen -> macht keinen Sinn im RWD, wenn Breite angegeben wird
+
+	renderMethod = figure
+	
+	rendering {
+		figure {
+			# style="width:{register:rowwidth}px;" überall entfernen
+			oneImageStdWrap.dataWrap = <span class="csc-textpic-image">|</span>
+			imageRowStdWrap >
+		}
+		splitCaption {
+			rowStdWrap >
+			noRowsStdWrap >
+			lastRowStdWrap >
+		}
+		noCaption {
+			rowStdWrap >
+			noRowsStdWrap >
+			lastRowStdWrap >
+		}
+	}
+}
+
+
+############################################################################################
+
