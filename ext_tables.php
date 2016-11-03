@@ -219,6 +219,79 @@ $TCA['sys_file_reference']['types']['1']['showitem'] .= ',--linebreak--,tx_t3res
 
 
 // -----------------------------------------------------------------------
+// pages erweitern
+// -----------------------------------------------------------------------
+
+
+$tempColumns = array (
+	"tx_t3responsive_hidexs" => Array (		
+		'exclude' => 1,
+			'label' => 'LLL:EXT:t3responsive/locallang_db.xml:tt_content.tx_t3responsive_hidexs',
+			'config' => array(
+				'type' => 'check',
+				'default' => '0',
+				'items' => array(
+					'1' => array(
+						'0' => 'LLL:EXT:t3responsive/locallang_db.xml:tt_content.tx_t3responsive_hidden'
+					)
+				)
+			),
+	),
+	"tx_t3responsive_hidesm" => Array (		
+		'exclude' => 1,
+			'label' => 'LLL:EXT:t3responsive/locallang_db.xml:tt_content.tx_t3responsive_hidesm',
+			'config' => array(
+				'type' => 'check',
+				'default' => '0',
+				'items' => array(
+					'1' => array(
+						'0' => 'LLL:EXT:t3responsive/locallang_db.xml:tt_content.tx_t3responsive_hidden'
+					)
+				)
+			),
+	),
+	"tx_t3responsive_hidemd" => Array (		
+		'exclude' => 1,
+			'label' => 'LLL:EXT:t3responsive/locallang_db.xml:tt_content.tx_t3responsive_hidemd',
+			'config' => array(
+				'type' => 'check',
+				'default' => '0',
+				'items' => array(
+					'1' => array(
+						'0' => 'LLL:EXT:t3responsive/locallang_db.xml:tt_content.tx_t3responsive_hidden'
+					)
+				)
+			),
+	),
+	"tx_t3responsive_hidelg" => Array (		
+		'exclude' => 1,
+			'label' => 'LLL:EXT:t3responsive/locallang_db.xml:tt_content.tx_t3responsive_hidelg',
+			'config' => array(
+				'type' => 'check',
+				'default' => '0',
+				'items' => array(
+					'1' => array(
+						'0' => 'LLL:EXT:t3responsive/locallang_db.xml:tt_content.tx_t3responsive_hidden'
+					)
+				)
+			),
+	)
+);
+
+$GLOBALS['TCA']['pages']['palettes']['page_visibility_resp'] = array(
+	'showitem' => 'tx_t3responsive_hidexs;;,tx_t3responsive_hidesm;;,tx_t3responsive_hidemd;;,tx_t3responsive_hidelg;;',
+	'canNotCollapse' => 1
+);
+
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns('pages', $tempColumns, 1);
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes(
+	'pages', 
+	'--palette--;LLL:EXT:t3responsive/locallang_db.xml:tt_content.tx_t3responsive_hide;page_visibility_resp', 
+	'', 
+	'after:nav_hide'
+);
+
+// -----------------------------------------------------------------------
 // Diverses
 // -----------------------------------------------------------------------
 

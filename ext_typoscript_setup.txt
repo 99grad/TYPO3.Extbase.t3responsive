@@ -4,7 +4,8 @@
 
 
 page.includeCSS {
-	t3responsive_frontend = EXT:t3responsive/Resources/Public/Css/frontend.css
+	//t3responsive_frontend_css = EXT:t3responsive/Resources/Public/Css/frontend.css
+	t3responsive_frontend_scss = EXT:t3responsive/Resources/Public/Scss/styles.scss
 }
 
 page.headerData {
@@ -13,6 +14,8 @@ page.headerData {
 		<script>document.createElement( "picture" );</script><script src="typo3conf/ext/t3responsive/Resources/Public/Js/picturefill.min.js" async></script>
 	)
 }
+
+page.headerData.65189 >
 
 ######################################################################################################
 # 	Typo3 6.2 Funktionen nutzen um Bilder responsive zu rendern
@@ -31,6 +34,8 @@ tt_content.image.20.1 {
 }
 */
 
+tt_content.image.20.1.sourceCollection >
+
 tt_content.image.20.1 {
 	sourceCollection {
 	
@@ -42,6 +47,7 @@ tt_content.image.20.1 {
 			dataKey = small
 		}
 		
+		/*
 		smallRetina >
 		smallRetina {
 			maxW = 400
@@ -50,6 +56,7 @@ tt_content.image.20.1 {
 			mediaQuery = (max-width: 600px) AND (min-resolution: 192dpi)
 			dataKey = smallRetina
 		}
+		*/
 		
 		// Small devices (tablets, 768px and up)
 		screen_sm_min {
@@ -212,7 +219,6 @@ tt_content.image.20 {
 	}
 	
 	# Grundsätzlich Bildausrichtung "Anzahl Spalten" wrap entfernen -> macht keinen Sinn im RWD, wenn Breite angegeben wird
-
 	renderMethod = figure
 	
 	rendering {
