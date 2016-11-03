@@ -11,11 +11,11 @@ if (!defined ('TYPO3_MODE')) 	die ('Access denied.');
 //
 // -----------------------------------------------------------------------
 
-
+/*
 t3lib_div::loadTCA("tt_content");
 t3lib_div::loadTCA("pages");
 t3lib_div::loadTCA("sys_file_reference");
-
+*/
 
 // -----------------------------------------------------------------------
 // Bildbreite: Responsive
@@ -155,7 +155,7 @@ $tempColumns = Array (
 );
 
 
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns("tt_content",$tempColumns,1);
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns("tt_content",$tempColumns);
 
 $GLOBALS['TCA']['tt_content']['palettes']['image_settings']['showitem'] = str_replace(
 	'imageborder;', 
@@ -211,7 +211,7 @@ $TCA['sys_file_reference']['palettes']['focal_point'] = array(
 	'canNotCollapse' => 1
 );
 
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns("sys_file_reference",$tempColumns,1);
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns("sys_file_reference",$tempColumns);
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes('sys_file_reference', 'tx_t3responsive_fp_zoom');
 
 $TCA['sys_file_reference']['palettes']['imageoverlayPalette']['showitem'] .= ',--linebreak--,tx_t3responsive_fp_zoom,--palette--;LLL:EXT:t3responsive/locallang_db.xml:tt_content.tx_t3responsive_hide;focal_point';
@@ -283,7 +283,7 @@ $GLOBALS['TCA']['pages']['palettes']['page_visibility_resp'] = array(
 	'canNotCollapse' => 1
 );
 
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns('pages', $tempColumns, 1);
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns('pages', $tempColumns);
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes(
 	'pages', 
 	'--palette--;LLL:EXT:t3responsive/locallang_db.xml:tt_content.tx_t3responsive_hide;page_visibility_resp', 
